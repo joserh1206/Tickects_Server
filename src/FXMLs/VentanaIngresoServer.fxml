@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="270.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.VentanaIngresoServerController">
+   <children>
+      <JFXPasswordField fx:id="pwfContraseniaAdmin" focusColor="#6200ea" labelFloat="true" layoutX="14.0" layoutY="112.0" prefHeight="45.0" prefWidth="157.0" promptText="Contraseña" unFocusColor="BLACK" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6200ea" height="72.0" layoutY="-1.0" stroke="#6200ea" strokeType="INSIDE" width="270.0">
+         <effect>
+            <DropShadow blurType="GAUSSIAN" />
+         </effect>
+      </Rectangle>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0a00b6" height="63.0" stroke="#0a00b6" strokeType="INSIDE" width="270.0">
+         <effect>
+            <DropShadow blurType="GAUSSIAN" />
+         </effect>
+      </Rectangle>
+      <Label layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="101.0" text="Admin" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnIngresarServer" layoutX="187.0" layoutY="128.0" onAction="#IngresarServer" style="-fx-background-color: #dd2c00;" text="Ingresar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" />
+         </effect>
+      </JFXButton>
+   </children>
+</AnchorPane>
