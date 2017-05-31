@@ -14,16 +14,14 @@ public class Empleado extends conector {
     public String email, contraseña, nombre, categoria;
     public Boolean estado;
 
-    public Empleado(String email, String contraseña, String nombre, String categoria) {
+    public Empleado(String email, String contraseña, String nombre, String categoria) throws IOException {
         this.email = email;
         this.contraseña = contraseña;
         this.nombre = nombre;
         this.categoria = categoria;
     }
 
-    public void ingreso(String datosIngreso[], DataOutputStream salida) throws IOException {
-
-        //System.out.println("13");
+    public String ingreso(String datosIngreso[], DataOutputStream salida) throws IOException {
 
         Empleado profe = new Empleado("eshuman@tec.ac.cr", "201403221", "Erika Marin",
                 "ROJO");
@@ -33,47 +31,20 @@ public class Empleado extends conector {
                 "AMARILLO");
 
         Empleado empleados[] = new Empleado[3];
-        //System.out.println("14");
 
         empleados[0] = profe;
         empleados[1] = jose;
         empleados[2] = randall;
 
-        //System.out.println("15");
-
-        //System.out.println("Datos ingreso");
-        //System.out.println(datosIngreso[0]);
-        //System.out.println(datosIngreso[0].length());
-        //System.out.println(datosIngreso[1]);
-        //System.out.println(datosIngreso[1].length());
-
-        //System.out.println("Datos usuario");
-        //System.out.println(empleados[0].email);
-        //System.out.println(empleados[0].contraseña);
-        //System.out.println(empleados[1].email);
-        //System.out.println(empleados[1].contraseña);
-
-
         String respuesta = "Fail;0";
-        //System.out.println("16");
         for (Empleado empleado : empleados) {
-            //System.out.println("17");
             if (Objects.equals(empleado.email, datosIngreso[0])) {
-                //System.out.println("18");
                 if (Objects.equals(empleado.contraseña, datosIngreso[1])) {
-                    //System.out.println("19");
-                    //flag = true;
                     respuesta = "Exito;" + empleado.categoria;
-                    //System.out.println("Si encontro el usuario");
-                } else {
-                    //System.out.println("No encontro contraseña del usuario");
                 }
-            } else {
-                //System.out.println("No se encontró el nombre de usuario");
             }
         }
-
         salida.writeUTF(respuesta);
-        //return flag;
+        return respuesta;
     }
 }

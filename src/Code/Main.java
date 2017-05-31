@@ -6,16 +6,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
 
 
 
 public class Main extends Application {
-
+    static ServerSocket server;
+    static Socket socket;
+    static DataOutputStream salida;
+    static DataInputStream entrada;
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         /*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXMLs/VentanaIngresoServer.fxml"));
         Parent parent = fxmlLoader.load();
         Stage stage = new Stage();
