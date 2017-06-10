@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXTreeTableView layoutX="14.0" layoutY="90.0" prefHeight="247.0" prefWidth="471.0" />
@@ -23,7 +22,7 @@
       </Label>
       <JFXDatePicker layoutX="65.0" layoutY="40.0" />
       <JFXDatePicker layoutX="312.0" layoutY="40.0" />
-      <JFXButton layoutX="165.0" layoutY="348.0" text="Promedio de Atencion">
+      <JFXButton layoutX="165.0" layoutY="348.0" style="-fx-background-color: #009688;" text="Promedio de Atencion" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font>

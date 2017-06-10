@@ -17,13 +17,14 @@ import java.util.Objects;
 
 
 public class Main extends Application {
-    static ServerSocket server;
-    static Socket socket;
-    static DataOutputStream salida;
-    static DataInputStream entrada;
+    public static boolean conectado = false;
+    public static ServerSocket server;
+    public static Socket socket;
+    public static DataOutputStream salida;
+    public static DataInputStream entrada;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXMLs/VentanaIngresoServer.fxml"));
         Parent parent = fxmlLoader.load();
         Stage stage = new Stage();
@@ -35,14 +36,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws IOException {
-        conector c = new conector();
-        System.out.println("Servidor iniciado correctamente!");
-        System.out.println("Esperando conexion con el cliente...");
-        c.iniciar();
         launch(args);
-
-
-
-
     }
 }

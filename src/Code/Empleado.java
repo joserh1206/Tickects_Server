@@ -15,6 +15,7 @@ public class Empleado extends conector {
     public Boolean estado;
 
     public Empleado(String email, String contraseña, String nombre, String categoria) throws IOException {
+        super(nombre);
         this.email = email;
         this.contraseña = contraseña;
         this.nombre = nombre;
@@ -25,7 +26,7 @@ public class Empleado extends conector {
 
         Empleado profe = new Empleado("eshuman@tec.ac.cr", "201403221", "Erika Marin",
                 "ROJO");
-        Empleado jose = new Empleado("joserh1206@gmail.com", "2016093725", "Joe Luis Rodriguez",
+        Empleado jose = new Empleado("joserh1206@gmail.com", "2016093725", "Jose Luis Rodriguez",
                 "VERDE");
         Empleado randall = new Empleado("randal@gmail.com", "20160000", "Randall Delgado",
                 "AMARILLO");
@@ -40,7 +41,7 @@ public class Empleado extends conector {
         for (Empleado empleado : empleados) {
             if (Objects.equals(empleado.email, datosIngreso[0])) {
                 if (Objects.equals(empleado.contraseña, datosIngreso[1])) {
-                    respuesta = "Exito;" + empleado.categoria;
+                    respuesta = "Exito;" + empleado.categoria+";"+empleado.nombre;
                 }
             }
         }

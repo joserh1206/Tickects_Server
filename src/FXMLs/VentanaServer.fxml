@@ -23,7 +23,7 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <Label fx:id="lblActivityLog" layoutX="418.0" layoutY="56.0" prefHeight="339.0" prefWidth="217.0" style="-fx-background-color: #ffffff;">
+      <Label fx:id="lblActivityLog" alignment="TOP_LEFT" layoutX="418.0" layoutY="56.0" prefHeight="339.0" prefWidth="217.0" style="-fx-background-color: #ffffff;">
          <effect>
             <DropShadow blurType="GAUSSIAN" />
          </effect>
@@ -51,5 +51,6 @@
       </Label>
       <TextField fx:id="txfEmpleadoEstadisticas" layoutX="11.0" layoutY="426.0" />
       <JFXCheckBox layoutX="332.0" layoutY="430.0" text="General" />
+      <JFXButton fx:id="btnConectar" layoutX="441.0" layoutY="427.0" onAction="#Conectar" ripplerFill="WHITE" style="-fx-background-color: #03a9f4;" text="Conectar" textFill="WHITE" />
    </children>
 </AnchorPane>
