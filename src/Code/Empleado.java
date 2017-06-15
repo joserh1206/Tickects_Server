@@ -4,13 +4,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import Code.conector;
+//import Code.conector;
 
 /**
  * Created by Jose Luis Rodriguez on 21/5/2017.
  */
 
-public class Empleado extends conector {
+public class Empleado{
     public String email, contraseña, nombre, categoria;
     public Boolean estado;
 

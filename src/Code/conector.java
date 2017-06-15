@@ -55,6 +55,8 @@ public class conector implements Runnable {
             }
             datosIngreso = mensaje.split(";");
             user = datosIngreso[2];
+            log = log + "\n " + user + "  se ha conectado!";
+
 //            lblActivityLog.setText(lblActivityLog.getText() + "\n " + user + "  se ha conectado!");
             if(Objects.equals(user, "Erika Marin")){
                 Platform.runLater(new Runnable() {

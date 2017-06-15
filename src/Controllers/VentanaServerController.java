@@ -1,13 +1,15 @@
 package Controllers;
 
+import Code.Empleado;
 import Code.Main;
 import Code.Server;
-import Code.conector;
+//import Code.conector;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -22,19 +24,26 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import static Code.Main.*;
+//import static Code.conector.user;
 
 public class VentanaServerController{
+
     public static Funcionarios jose = new Funcionarios("José Luis Rodríguez", "Desconectado");
     public static Funcionarios randall = new Funcionarios("Randall Delgado", "Desconectado");
     public static Funcionarios profe = new Funcionarios("Erika Shumann", "Desconectado");
 
+    public static String log = "";
+
     int puerto = 9000;
 
     @FXML
-    public Label lblActivityLog;
+    private Label lblActivityLog;
 
     @FXML
     private JFXTreeTableView<Funcionarios> ttvEmpleados;
@@ -79,12 +88,14 @@ public class VentanaServerController{
 //            jose.estado.setValue("Conectado");
 //            System.out.println("2");
         btnConectar.setDisable(true);
-
     }
+
+
 
     @FXML
     void DesconectarServer(ActionEvent event) throws IOException {
         if (Main.conectado = true) {
+            lblActivityLog.setText(lblActivityLog.getText() + "\n " + log + "  se ha conectado!");
             btnDesconectarServer.setDisable(true);
             Main.conectado = false;
             entrada.close();
@@ -135,6 +146,7 @@ public class VentanaServerController{
 
 
     }
+
 
     public static class Funcionarios extends RecursiveTreeObject<Funcionarios>{
 
