@@ -23,11 +23,11 @@ public class Empleado{
 
     public String ingreso(String datosIngreso[], DataOutputStream salida) throws IOException {
 
-        Empleado profe = new Empleado("eshuman@tec.ac.cr", "201403221", "Erika Marin",
+        Empleado profe = new Empleado("eshuman@tec.ac.cr", "2014032210", "Erika Marin",
                 "ROJO");
         Empleado jose = new Empleado("joserh1206@gmail.com", "2016093725", "Jose Luis Rodriguez",
                 "VERDE");
-        Empleado randall = new Empleado("randal@gmail.com", "20160000", "Randall Delgado",
+        Empleado randall = new Empleado("rdelgadom23@gmail.com", "2016238520", "Randall Delgado",
                 "AMARILLO");
 
         Empleado empleados[] = new Empleado[3];

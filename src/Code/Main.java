@@ -8,10 +8,12 @@ import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -36,6 +38,27 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws IOException {
+
+        EditorExcel x = new EditorExcel();
+
+        ArrayList<Ticket> t = new ArrayList<>();
+        t.add(new Ticket(new Date(117, 5, 14, 10, 06, 54), "C-03", "Errores"));
+        t.add(new Ticket(new Date(117, 5, 15), "C-09", "Problemas"));
+        t.add(new Ticket(new Date(117, 5, 16), "C-12", "Ayuda"));
+
+        x.guardar(t);
+
+        File arch = new File("Tickets.xls");
+        if (!arch.exists()){
+            try {
+                arch.createNewFile();
+            } catch (IOException ioe) {
+                System.out.println("Error al crear el fichero nuevo" + ioe);
+            }
+        }
+
+        x.cargar(arch);
+
         launch(args);
     }
 }
