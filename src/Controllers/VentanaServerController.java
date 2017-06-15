@@ -1,8 +1,6 @@
 package Controllers;
 
-import Code.Empleado;
-import Code.Main;
-import Code.Server;
+import Code.*;
 //import Code.conector;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -26,7 +24,9 @@ import javafx.util.Callback;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static Code.Main.*;
@@ -49,7 +49,7 @@ public class VentanaServerController{
     private JFXTreeTableView<Funcionarios> ttvEmpleados;
 
     @FXML
-    private JFXTreeTableView<?> ttvTicketsServer;
+    private JFXTreeTableView<Ticket> ttvTicketsServer;
 
     @FXML
     private TextField txfEmpleadoEstadisticas;
@@ -78,6 +78,7 @@ public class VentanaServerController{
     void Conectar(ActionEvent event) throws IOException {
         btnDesconectarServer.setDisable(false);
         IniciarTabla();
+        MostrarTickets();
 //            System.out.println("0");
         Server server = new Server(puerto);
 
@@ -143,10 +144,52 @@ public class VentanaServerController{
         ttvEmpleados.setShowRoot(false);
         ttvEmpleados.autosize();
 
-
-
     }
 
+    public void MostrarTickets() {
+        JFXTreeTableColumn<Ticket, String> colFecha = new JFXTreeTableColumn<>("Fecha y Hora de Recepción");
+        colFecha.setPrefWidth(150);
+        colFecha.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
+                return param.getValue().getValue().strFechaYHoraRecepcion;
+            }
+        });
+
+        JFXTreeTableColumn<Ticket, String> colIDCliente = new JFXTreeTableColumn<>("ID de Cliente");
+        colIDCliente.setPrefWidth(150);
+        colIDCliente.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
+                return param.getValue().getValue().idCliente;
+            }
+        });
+
+        JFXTreeTableColumn<Ticket, String> colAsunto = new JFXTreeTableColumn<>("Asunto");
+        colAsunto.setPrefWidth(150);
+        colAsunto.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
+                return param.getValue().getValue().asunto;
+            }
+        });
+
+        ObservableList<Ticket> tickets = FXCollections.observableArrayList();
+
+        EditorExcel x = new EditorExcel();
+        ArrayList<Ticket> ticketsArchivo = x.cargar(new File("Tickets.xls"));
+
+        for (int i = 0; i < ticketsArchivo.size(); i++){
+            tickets.add(ticketsArchivo.get(i));
+        }
+
+        final TreeItem<Ticket> root = new RecursiveTreeItem<Ticket>(tickets, RecursiveTreeObject::getChildren);
+        ttvTicketsServer.getColumns().setAll(colFecha, colIDCliente, colAsunto);
+        ttvTicketsServer.setRoot(root);
+        ttvTicketsServer.setShowRoot(false);
+        ttvTicketsServer.autosize();
+
+    }
 
     public static class Funcionarios extends RecursiveTreeObject<Funcionarios>{
 

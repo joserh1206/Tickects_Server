@@ -1,5 +1,6 @@
 package Code;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.Date;
@@ -7,27 +8,58 @@ import java.util.Date;
 /**
  * Created by Randall on 15/06/2017.
  */
-public class Ticket {
+
+public class Ticket extends RecursiveTreeObject <Ticket> {
 
     public Date fechaYHoraRecepcion;
+    public SimpleStringProperty strFechaYHoraRecepcion = new SimpleStringProperty();
     public SimpleStringProperty idCliente = new SimpleStringProperty();
     public SimpleStringProperty asunto = new SimpleStringProperty();
     public static int idTicket = 0;
     public SimpleStringProperty categoria = new SimpleStringProperty();
     public SimpleStringProperty idEmpleado = new SimpleStringProperty();
     public Date fechaYHoraAtencion;
+    public SimpleStringProperty strFechaYHoraAtencion = new SimpleStringProperty();
     public SimpleStringProperty tiempo = new SimpleStringProperty();
     public SimpleStringProperty comentario = new SimpleStringProperty();
     public SimpleStringProperty estado = new SimpleStringProperty();
 
     public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto, int pIdTicket, String pCategoria, String pIdEmpleado, Date pFechaYHoraAtencion, String pTiempo, String pComentario, String pEstado){
         fechaYHoraRecepcion = pFechaYHoraRecepcion;
+
+        int min = fechaYHoraRecepcion.getMinutes();
+        int s = fechaYHoraRecepcion.getSeconds();
+
+        String minutos = Integer.toString(min);
+        String segundos = Integer.toString(s);
+
+        if (min < 10)
+            minutos = "0" + minutos;
+        if (s < 10)
+            segundos = "0" + segundos;
+
+        strFechaYHoraRecepcion.set(Integer.toString(fechaYHoraRecepcion.getDay()) + "/" + Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" + Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " + Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
         idCliente.set(pIdCliente);
         asunto.set(pAsunto);
         idTicket = pIdTicket;
         categoria.set(pCategoria);
         idEmpleado.set(pIdEmpleado);
         fechaYHoraAtencion = pFechaYHoraAtencion;
+
+        min = fechaYHoraAtencion.getMinutes();
+        s = fechaYHoraAtencion.getSeconds();
+
+        minutos = Integer.toString(min);
+        segundos = Integer.toString(s);
+
+        if (min < 10)
+            minutos = "0" + minutos;
+        if (s < 10)
+            segundos = "0" + segundos;
+
+
+        strFechaYHoraAtencion.set(Integer.toString(fechaYHoraAtencion.getDay()) + "/" + Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" + Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " + Integer.toString(fechaYHoraAtencion.getHours()) + ":" + minutos + ":" + segundos);
+
         tiempo.set(pTiempo);
         comentario.set(pComentario);
         estado.set(pEstado);
@@ -35,6 +67,19 @@ public class Ticket {
 
     public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto){
         fechaYHoraRecepcion = pFechaYHoraRecepcion;
+
+        int min = fechaYHoraRecepcion.getMinutes();
+        int s = fechaYHoraRecepcion.getSeconds();
+
+        String minutos = Integer.toString(min);
+        String segundos = Integer.toString(s);
+
+        if (min < 10)
+            minutos = "0" + minutos;
+        if (s < 10)
+            segundos = "0" + segundos;
+
+        strFechaYHoraRecepcion.set(Integer.toString(fechaYHoraRecepcion.getDay()) + "/" + Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" + Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " + Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
         idCliente.set(pIdCliente);
         asunto.set(pAsunto);
         idTicket++;
