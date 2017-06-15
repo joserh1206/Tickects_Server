@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,10 +28,119 @@ import javafx.util.Callback;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static Code.Main.*;
-//import static Code.conector.user;
+//import static Code.Server.c;
+import static Controllers.VentanaServerController.*;
+
+class conector extends Task<String> {
+
+    public String datosIngreso[];
+    public static String user = "";
+
+    /**
+     * Invoked when the Task is executed, the call method must be overridden and
+     * implemented by subclasses. The call method actually performs the
+     * background thread logic. Only the updateProgress, updateMessage, updateValue and
+     * updateTitle methods of Task may be called from code within this method.
+     * Any other interaction with the Task from the background thread will result
+     * in runtime exceptions.
+     *
+     * @return The result of the background work, if any.
+     * @throws Exception an unhandled exception which occurred during the
+     *                   background operation
+     */
+    @Override
+    protected String call() throws Exception {
+        try {
+            server = new ServerSocket(9000);
+            socket = server.accept();
+            entrada = new DataInputStream(socket.getInputStream());
+            salida = new DataOutputStream(socket.getOutputStream());
+            //System.out.println("Conexion establecida exitosamente");
+            String mensaje = "Fail;0";
+            while (Objects.equals(mensaje, "Fail;0")) {
+                mensaje = entrada.readUTF();
+                int num = mensaje.indexOf(";");
+                datosIngreso = mensaje.split(";");
+                Empleado e = new Empleado("admin", "admin", "admin", "admin");
+                mensaje = e.ingreso(datosIngreso, salida);
+            }
+            datosIngreso = mensaje.split(";");
+            user = datosIngreso[2];
+            log = log + "\n " + user + "  se ha conectado!";
+            updateMessage(log);
+//            lblActivityLog.setText(lblActivityLog.getText() + "\n " + user + "  se ha conectado!");
+            if (Objects.equals(user, "Erika Marin")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        profe.estado.setValue("Conectado");
+                    }
+                });
+            } else if (Objects.equals(user, "Jose Luis Rodriguez")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        jose.estado.setValue("Conectado");
+                    }
+                });
+            } else if (Objects.equals(user, "Randall Delgado")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        randall.estado.setValue("Conectado");
+                    }
+                });
+            }
+
+            mensaje = "Conectar";
+            System.out.println("1");
+            while (!Objects.equals(mensaje, "Desconectar")) {
+                System.out.println("2");
+                mensaje = entrada.readUTF();
+                int num = mensaje.indexOf(";");
+                datosIngreso = mensaje.split(";");
+                mensaje = datosIngreso[1];
+                System.out.println(mensaje + " MSJ");
+            }
+            mensaje = datosIngreso[0];
+            if (Objects.equals(mensaje, "Erika Marin")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        profe.estado.setValue("Desconectado");
+                    }
+                });
+            } else if (Objects.equals(mensaje, "Jose Luis Rodriguez")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        jose.estado.setValue("Desconectado");
+                    }
+                });
+            } else if (Objects.equals(mensaje, "Randall Delgado")) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        randall.estado.setValue("Desconectado");
+                    }
+                });
+            }
+            log = log + "\n " + mensaje + "  se ha desconectado!";
+            updateMessage(log);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Se produjo un error al conectar");
+        }
+
+        return user;
+    }
+}
+
 
 public class VentanaServerController{
 
@@ -39,8 +149,6 @@ public class VentanaServerController{
     public static Funcionarios profe = new Funcionarios("Erika Shumann", "Desconectado");
 
     public static String log = "";
-
-    int puerto = 9000;
 
     @FXML
     private Label lblActivityLog;
@@ -79,7 +187,13 @@ public class VentanaServerController{
         btnDesconectarServer.setDisable(false);
         IniciarTabla();
 //            System.out.println("0");
-        Server server = new Server(puerto);
+//        Server server = new Server(puerto);
+        conector c = new conector();
+
+        lblActivityLog.textProperty().bind(c.messageProperty());
+
+        new Thread(c).start();
+
 
 //            System.out.println("1");
 //            c.iniciar();
@@ -95,13 +209,10 @@ public class VentanaServerController{
     @FXML
     void DesconectarServer(ActionEvent event) throws IOException {
         if (Main.conectado = true) {
-            lblActivityLog.setText(lblActivityLog.getText() + "\n " + log + "  se ha conectado!");
+            //            lblActivityLog.setText(lblActivityLog.getText() + "\n " + log + "  se ha conectado!");
             btnDesconectarServer.setDisable(true);
+            System.out.println("1");
             Main.conectado = false;
-            entrada.close();
-            salida.close();
-            server.close();
-            socket.close();
             btnConectar.setDisable(false);
             //jose.estado.setValue("Desconectado");
         } else{

@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+
 import static Code.Main.server;
 import static Code.Main.socket;
 
@@ -17,6 +18,9 @@ public class Server implements Runnable {
 
     int puerto;
     Thread threadserver;
+
+    //public static conector c;
+
 
     public Server(int puerto){
         threadserver = new Thread(this, "server");
@@ -38,6 +42,7 @@ public class Server implements Runnable {
     public void run() {
         try {
             server = new ServerSocket(puerto);
+
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -50,8 +55,9 @@ public class Server implements Runnable {
             });
             while(true){
                 socket = server.accept();
-                conector c = new conector();
-                c.start();
+//                c = new conector();
+//                new Thread(c).start();
+
             }
         } catch (IOException e) {
         }
