@@ -1,6 +1,7 @@
 package Controllers;
 
 import Code.Main;
+import Code.Server;
 import Code.conector;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -30,8 +31,10 @@ public class VentanaServerController{
     public static Funcionarios randall = new Funcionarios("Randall Delgado", "Desconectado");
     public static Funcionarios profe = new Funcionarios("Erika Shumann", "Desconectado");
 
+    int puerto = 9000;
+
     @FXML
-    private Label lblActivityLog;
+    public Label lblActivityLog;
 
     @FXML
     private JFXTreeTableView<Funcionarios> ttvEmpleados;
@@ -67,8 +70,8 @@ public class VentanaServerController{
         btnDesconectarServer.setDisable(false);
         IniciarTabla();
 //            System.out.println("0");
-        conector c = new conector("Thread");
-        c.start();
+        Server server = new Server(puerto);
+
 //            System.out.println("1");
 //            c.iniciar();
 //            c.Ingreso();

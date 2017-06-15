@@ -26,33 +26,25 @@ import java.io.*;
 import static Code.Main.*;
 import static Controllers.VentanaServerController.*;
 
-public class conector extends Thread {
+public class conector implements Runnable {
+    Thread thread;
 
-    public conector (String conexion){
-        super(conexion);
+    public conector (){
+        thread = new Thread(this, "server");
     }
 
-    int puerto = 9000;
+    public void start(){
+        this.thread.start();
+    }
+
     public String datosIngreso[];
     public static String user;
 
     public void run(){
         try{
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mensaje del servidor");
-                    alert.setHeaderText("Por favor espere");
-                    alert.setContentText("Por favor espere a que se conecte un empleado");
-                    alert.showAndWait();
-                }
-            });
-            server = new ServerSocket(puerto);
-            socket = server.accept();
             entrada = new DataInputStream(socket.getInputStream());
             salida = new DataOutputStream(socket.getOutputStream());
-            System.out.println("Conexion establecida exitosamente");
+            //System.out.println("Conexion establecida exitosamente");
             String mensaje = "Fail;0";
             while (Objects.equals(mensaje, "Fail;0")) {
                 mensaje = entrada.readUTF();
@@ -90,12 +82,14 @@ public class conector extends Thread {
             }
 
             mensaje = "Conectar";
+            System.out.println("1");
             while (!Objects.equals(mensaje, "Desconectar")) {
+                System.out.println("2");
                 mensaje = entrada.readUTF();
                 int num = mensaje.indexOf(";");
                 datosIngreso = mensaje.split(";");
                 mensaje = datosIngreso[1];
-                System.out.println(mensaje);
+                System.out.println(mensaje+" MSJ");
             }
             mensaje = datosIngreso[0];
             if(Objects.equals(mensaje, "Erika Marin")){

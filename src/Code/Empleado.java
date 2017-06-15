@@ -15,7 +15,6 @@ public class Empleado extends conector {
     public Boolean estado;
 
     public Empleado(String email, String contraseña, String nombre, String categoria) throws IOException {
-        super(nombre);
         this.email = email;
         this.contraseña = contraseña;
         this.nombre = nombre;
