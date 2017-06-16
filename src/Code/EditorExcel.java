@@ -16,7 +16,9 @@ import java.util.ArrayList;
  */
 
 public class EditorExcel {
-    public ArrayList <Ticket> tickets = new ArrayList(); //guarda la lista de libros registrados
+    public static ArrayList <Ticket> tickets = new ArrayList(); //guarda la lista de libros registrados
+//    public static int tamaniof;
+//    public static int tamanioc;
     //public static ArrayList <Revista> revistas = new ArrayList();
 
     /**
@@ -33,6 +35,7 @@ public class EditorExcel {
             HSSFSheet pagLibros = workbook.getSheetAt(0);  //selecciona la página a leer
             HSSFRow filaActual;     //crea una fila, esta va a ser utilizada para recorrer la tabla
             int filas = pagLibros.getLastRowNum();     //toma la cantidad de filas
+//            tamaniof = filas;
             //System.out.println("Filas: " + filas);
 
             String fechaYHoraRecepcion = "";
@@ -46,6 +49,7 @@ public class EditorExcel {
                     break;
                 //System.out.println(filaActual.getRowNum());
                 int columnas = filaActual.getLastCellNum();         //toma el número de columnas
+//                tamanioc = columnas;
                 //System.out.println("Columnas: " + columnas);
                 //System.out.println("Fila: " + f);
 

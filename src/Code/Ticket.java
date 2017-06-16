@@ -12,10 +12,10 @@ import java.util.Date;
 public class Ticket extends RecursiveTreeObject <Ticket> {
 
     public Date fechaYHoraRecepcion;
+    public int idTicket;
     public SimpleStringProperty strFechaYHoraRecepcion = new SimpleStringProperty();
     public SimpleStringProperty idCliente = new SimpleStringProperty();
     public SimpleStringProperty asunto = new SimpleStringProperty();
-    public static int idTicket = 0;
     public SimpleStringProperty categoria = new SimpleStringProperty();
     public SimpleStringProperty idEmpleado = new SimpleStringProperty();
     public Date fechaYHoraAtencion;
@@ -111,7 +111,7 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
         idCliente.set(pIdCliente);
         asunto.set(pAsunto);
         categoria.set(pCategoria);
-        idTicket++;
+        //idTicket++;
         estado.set("PENDIENTE");
     }
 

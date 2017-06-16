@@ -38,6 +38,8 @@ import static Controllers.VentanaServerController.*;
 
 class conector extends Task<String> {
 
+    public static int idTicket = 0;
+
     public String datosIngreso[];
     public static String user = "";
 
@@ -97,15 +99,40 @@ class conector extends Task<String> {
                     }
                 });
             }
-
-            mensaje = "Conectar";
+            boolean primero = true;
+            mensaje = "";
+            String envio = "";
 //            System.out.println("1");
             while (!Objects.equals(mensaje, "Desconectar")) {
 //                System.out.println("2");
                 mensaje = entrada.readUTF();
-                int num = mensaje.indexOf(";");
                 datosIngreso = mensaje.split(";");
                 mensaje = datosIngreso[1];
+                if(Objects.equals(mensaje, "Actualizar")){
+                    System.out.println("ENTRO2");
+                    int tamanio = EditorExcel.tickets.size();
+                    Ticket t;
+                    for(int i=0; i<tamanio; i++){
+                        System.out.println("ENTRO3");
+                        t = EditorExcel.tickets.get(i);
+//                        System.out.println(t.categoria+" TCATEGORIA");
+                        if(Objects.equals(t.categoria.getValue().toLowerCase(), datosIngreso[0].toLowerCase())){
+                            t.idTicket = idTicket;
+                            idTicket++;
+                            if(!primero) {
+                                envio = envio + ";" + t.asunto.getValue() + ":" + t.idCliente.getValue() + ":" + String.valueOf(t.idTicket);
+                                System.out.println("ENTRO");
+                            }
+                            else{
+                                envio = t.asunto.getValue() + ":" + t.idCliente.getValue() + ":" + String.valueOf(t.idTicket);
+                                primero = false;
+                            }
+                        }
+                    }
+                    salida.writeUTF(envio);
+                    System.out.println("ENVIO: "+envio);
+
+                }
                 System.out.println(mensaje + " MSJ");
             }
             mensaje = datosIngreso[0];
@@ -319,7 +346,7 @@ public class VentanaServerController{
         });
 
         ObservableList<Ticket> tickets = FXCollections.observableArrayList();
-        ObservableList<String> CategoriasTickets = FXCollections.observableArrayList("Rojo", "Amarillo", "Verde");
+        ObservableList<String> CategoriasTickets = FXCollections.observableArrayList("rojo", "amarillo", "verde");
 
 
         EditorExcel x = new EditorExcel();
