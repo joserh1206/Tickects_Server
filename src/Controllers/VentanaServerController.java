@@ -36,6 +36,13 @@ import static Code.Main.*;
 //import static Code.Server.c;
 import static Controllers.VentanaServerController.*;
 
+/**
+ * Clase de conexión. Utiliza el método call() para determinar el registro de actividad del sistema.
+ * @author Randall Delgado
+ * @author José Luis Rodríguez
+ * @author Óscar Cortés
+ */
+
 class conector extends Task<String> {
 
     public static int idTicket = 0;
@@ -44,16 +51,10 @@ class conector extends Task<String> {
     public static String user = "";
 
     /**
-     * Invoked when the Task is executed, the call method must be overridden and
-     * implemented by subclasses. The call method actually performs the
-     * background thread logic. Only the updateProgress, updateMessage, updateValue and
-     * updateTitle methods of Task may be called from code within this method.
-     * Any other interaction with the Task from the background thread will result
-     * in runtime exceptions.
-     *
-     * @return The result of the background work, if any.
-     * @throws Exception an unhandled exception which occurred during the
-     *                   background operation
+     * Conector entre cliente y servidor. Se debe sobrecargar el método call() de
+     * Task<> para que funcione en la conexión respectiva.
+     * @return El resultado del trabajo realizado
+     * @throws Exception excepción de cualquier clase
      */
     @Override
     protected String call() throws Exception {
@@ -169,6 +170,12 @@ class conector extends Task<String> {
     }
 }
 
+/**
+ * Clase controladora de la interfaz. Se encarga de actualizar las tablas, datos, entre otros.
+ * @author Randall Delgado
+ * @author José Luis Rodríguez
+ * @author Óscar Cortés
+ */
 
 public class VentanaServerController{
 

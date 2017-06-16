@@ -6,7 +6,10 @@ import javafx.beans.property.SimpleStringProperty;
 import java.util.Date;
 
 /**
- * Created by Randall on 15/06/2017.
+ *Clase que permite manejar los atributos de los tickets en el sistema
+ * @author Randall Delgado
+ * @author José Luis Rodríguez
+ * @author Óscar Cortés
  */
 
 public class Ticket extends RecursiveTreeObject <Ticket> {
@@ -25,6 +28,7 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
     public SimpleStringProperty estado = new SimpleStringProperty();
 
     /**
+     * Constructor de Ticket
      * @param pFechaYHoraRecepcion
      * @param pIdCliente
      * @param pAsunto
@@ -86,6 +90,7 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
     }
 
     /**
+     * Constructor sobrecargado de Ticket
      * @param pFechaYHoraRecepcion
      * @param pIdCliente
      * @param pAsunto
