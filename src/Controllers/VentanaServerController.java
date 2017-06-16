@@ -2,10 +2,7 @@ package Controllers;
 
 import Code.*;
 //import Code.conector;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,11 +12,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTreeTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -57,10 +57,11 @@ class conector extends Task<String> {
     protected String call() throws Exception {
         try {
             server = new ServerSocket(9000);
+            log = log + "\n Se cargaron los archivos de forma exitosa";
+            updateMessage(log);
             socket = server.accept();
             entrada = new DataInputStream(socket.getInputStream());
             salida = new DataOutputStream(socket.getOutputStream());
-            //System.out.println("Conexion establecida exitosamente");
             String mensaje = "Fail;0";
             while (Objects.equals(mensaje, "Fail;0")) {
                 mensaje = entrada.readUTF();
@@ -98,9 +99,9 @@ class conector extends Task<String> {
             }
 
             mensaje = "Conectar";
-            System.out.println("1");
+//            System.out.println("1");
             while (!Objects.equals(mensaje, "Desconectar")) {
-                System.out.println("2");
+//                System.out.println("2");
                 mensaje = entrada.readUTF();
                 int num = mensaje.indexOf(";");
                 datosIngreso = mensaje.split(";");
@@ -172,6 +173,12 @@ public class VentanaServerController{
     private JFXButton btnConectar;
 
     @FXML
+    private JFXButton btnCCategoria;
+
+    @FXML
+    private JFXComboBox<String> cbCategorias;
+
+    @FXML
     private JFXButton btnVerde;
 
     @FXML
@@ -179,6 +186,7 @@ public class VentanaServerController{
 
     @FXML
     private JFXButton btnRojo;
+
 
 
     @FXML
@@ -190,6 +198,11 @@ public class VentanaServerController{
         stage.setTitle("Estadisticas");
         stage.setResizable(false);
         stage.show();
+    }
+
+    @FXML
+    void CambiarCategoria(ActionEvent event) {
+
     }
 
     @FXML
@@ -260,6 +273,7 @@ public class VentanaServerController{
         funcionarios.add(profe);
 
         final TreeItem<Funcionarios> root = new RecursiveTreeItem<Funcionarios>(funcionarios, RecursiveTreeObject::getChildren);
+
         ttvEmpleados.getColumns().setAll(colNombre, colEstado);
         ttvEmpleados.setRoot(root);
         ttvEmpleados.setShowRoot(false);
@@ -295,7 +309,18 @@ public class VentanaServerController{
             }
         });
 
+        JFXTreeTableColumn<Ticket, String> colCategoria = new JFXTreeTableColumn<>("Categoria");
+        colAsunto.setPrefWidth(100);
+        colAsunto.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
+                return param.getValue().getValue().categoria;
+            }
+        });
+
         ObservableList<Ticket> tickets = FXCollections.observableArrayList();
+        ObservableList<String> CategoriasTickets = FXCollections.observableArrayList("Rojo", "Amarillo", "Verde");
+
 
         EditorExcel x = new EditorExcel();
 
@@ -315,6 +340,18 @@ public class VentanaServerController{
         }
 
         final TreeItem<Ticket> root = new RecursiveTreeItem<Ticket>(tickets, RecursiveTreeObject::getChildren);
+
+        colCategoria.setCellFactory(ComboBoxTreeTableCell.forTreeTableColumn(CategoriasTickets));
+
+        colCategoria.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<Ticket, String>>() {
+            @Override
+            public void handle(TreeTableColumn.CellEditEvent<Ticket, String> event) {
+                TreeItem<Ticket> EditarTicket = ttvTicketsServer.getTreeItem(event.getTreeTablePosition().getRow());
+                EditarTicket.getValue().setCategoria(event.getNewValue());
+            }
+        });
+
+        ttvTicketsServer.setEditable(true);
         ttvTicketsServer.getColumns().setAll(colFecha, colIDCliente, colAsunto);
         ttvTicketsServer.setRoot(root);
         ttvTicketsServer.setShowRoot(false);

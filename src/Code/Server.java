@@ -22,6 +22,9 @@ public class Server implements Runnable {
     //public static conector c;
 
 
+    /**
+     * @param puerto
+     */
     public Server(int puerto){
         threadserver = new Thread(this, "server");
         threadserver.start();

@@ -24,7 +24,20 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
     public SimpleStringProperty comentario = new SimpleStringProperty();
     public SimpleStringProperty estado = new SimpleStringProperty();
 
-    public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto, int pIdTicket, String pCategoria, String pIdEmpleado, Date pFechaYHoraAtencion, String pTiempo, String pComentario, String pEstado){
+    /**
+     * @param pFechaYHoraRecepcion
+     * @param pIdCliente
+     * @param pAsunto
+     * @param pIdTicket
+     * @param pCategoria
+     * @param pIdEmpleado
+     * @param pFechaYHoraAtencion
+     * @param pTiempo
+     * @param pComentario
+     * @param pEstado
+     */
+    public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto, int pIdTicket, String pCategoria,
+                  String pIdEmpleado, Date pFechaYHoraAtencion, String pTiempo, String pComentario, String pEstado){
         fechaYHoraRecepcion = pFechaYHoraRecepcion;
 
         int min = fechaYHoraRecepcion.getMinutes();
@@ -38,7 +51,10 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
         if (s < 10)
             segundos = "0" + segundos;
 
-        strFechaYHoraRecepcion.set(Integer.toString(fechaYHoraRecepcion.getDay()) + "/" + Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" + Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " + Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
+        strFechaYHoraRecepcion.set(Integer.toString(fechaYHoraRecepcion.getDay()) + "/" +
+                Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" +
+                Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " +
+                Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
         idCliente.set(pIdCliente);
         asunto.set(pAsunto);
         idTicket = pIdTicket;
@@ -65,6 +81,15 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
         estado.set(pEstado);
     }
 
+    public void setCategoria(String categoria) {
+        this.categoria.set(categoria);
+    }
+
+    /**
+     * @param pFechaYHoraRecepcion
+     * @param pIdCliente
+     * @param pAsunto
+     */
     public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto){
         fechaYHoraRecepcion = pFechaYHoraRecepcion;
 
@@ -79,9 +104,13 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
         if (s < 10)
             segundos = "0" + segundos;
 
-        strFechaYHoraRecepcion.set(Integer.toString(fechaYHoraRecepcion.getDay()) + "/" + Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" + Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " + Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
+        strFechaYHoraRecepcion.set(Integer.toString(fechaYHoraRecepcion.getDay()) + "/" +
+                Integer.toString(fechaYHoraRecepcion.getMonth() + 1) + "/" +
+                Integer.toString(fechaYHoraRecepcion.getYear() + 1900) + ", " +
+                Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
         idCliente.set(pIdCliente);
         asunto.set(pAsunto);
+//        categoria.set(pCategoria);
         idTicket++;
         estado.set("PENDIENTE");
     }
