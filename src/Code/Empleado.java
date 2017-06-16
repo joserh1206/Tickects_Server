@@ -2,7 +2,6 @@ package Code;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 //import Code.conector;
 
@@ -21,6 +20,13 @@ public class Empleado{
         this.categoria = categoria;
     }
 
+    /**
+     * Carga los datos de ingreso de cada empleado
+     * @param datosIngreso
+     * @param salida
+     * @return
+     * @throws IOException
+     */
     public String ingreso(String datosIngreso[], DataOutputStream salida) throws IOException {
 
         Empleado profe = new Empleado("eshuman@tec.ac.cr", "2014032210", "Erika Marin",

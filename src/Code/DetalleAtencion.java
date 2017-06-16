@@ -19,6 +19,10 @@ public class DetalleAtencion {
         this.hora = pHora;
     }
 
+    /**
+     * Devuelve la metrica del detalleAtencion del que se solicito
+     * @return
+     */
     public int obtenerMetrica(){
         if (tipoTicket == "Verde"){
             return tInvertido-10;

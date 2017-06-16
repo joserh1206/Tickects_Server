@@ -24,6 +24,11 @@ public class VentanaIngresoServerController extends VentanaServerController{
     @FXML
     private JFXButton btnIngresarServer;
 
+    /**
+     * Valida los datos para que solo el administrador pueda conectarse
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void IngresarServer(ActionEvent event) throws IOException {
         if(Objects.equals(pwfContraseniaAdmin.getText(), "admin")) {
