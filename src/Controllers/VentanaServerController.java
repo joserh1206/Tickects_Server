@@ -150,6 +150,7 @@ public class VentanaServerController{
     public static Funcionarios profe = new Funcionarios("Erika Shumann", "Desconectado");
 
     public static String log = "";
+    public EditorExcel x = new EditorExcel();
 
     @FXML
     private Label lblActivityLog;
@@ -173,19 +174,7 @@ public class VentanaServerController{
     private JFXButton btnConectar;
 
     @FXML
-    private JFXButton btnCCategoria;
-
-    @FXML
-    private JFXComboBox<String> cbCategorias;
-
-    @FXML
-    private JFXButton btnVerde;
-
-    @FXML
-    private JFXButton btnAmarillo;
-
-    @FXML
-    private JFXButton btnRojo;
+    private JFXButton btnGuardar;
 
 
 
@@ -321,9 +310,6 @@ public class VentanaServerController{
         ObservableList<Ticket> tickets = FXCollections.observableArrayList();
         ObservableList<String> CategoriasTickets = FXCollections.observableArrayList("Rojo", "Amarillo", "Verde");
 
-
-        EditorExcel x = new EditorExcel();
-
         File arch = new File("Tickets.xls");
         if (!arch.exists()){
             try {
@@ -333,10 +319,10 @@ public class VentanaServerController{
             }
         }
 
-        ArrayList<Ticket> ticketsArchivo = x.cargar(arch);
+        x.tickets = x.cargarPendientes(arch);
 
-        for (int i = 0; i < ticketsArchivo.size(); i++){
-            tickets.add(ticketsArchivo.get(i));
+        for (int i = 0; i < x.tickets.size(); i++){
+            tickets.add(x.tickets.get(i));
         }
 
         final TreeItem<Ticket> root = new RecursiveTreeItem<Ticket>(tickets, RecursiveTreeObject::getChildren);
@@ -359,11 +345,13 @@ public class VentanaServerController{
 
     }
 
-/*    public void ClasificarTicket(){
-        Ticket t = ttvTicketsServer.getSelectionModel().getSelectedItem().getValue();
 
+    public void onGuardar(){
+        x.guardarCategorias(x.tickets);
+        System.out.println("Categorías guardadas");
+        MostrarTickets();
     }
-*/
+
 
     public static class Funcionarios extends RecursiveTreeObject<Funcionarios>{
 

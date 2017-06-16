@@ -25,7 +25,7 @@ public class EditorExcel {
      * @param arch Entrada de tipo File, recibe el nombre del archivo o el path en forma de string para leerlo
      */
     
-   public ArrayList<Ticket> cargar(File arch){
+   public ArrayList<Ticket> cargarPendientes(File arch){
         InputStream archivo = null;     //inicializa puntero al archivo
         try {
             archivo = new FileInputStream(arch);    //toma el archivo a modificar
@@ -38,6 +38,7 @@ public class EditorExcel {
             String fechaYHoraRecepcion = "";
             String idCliente = "";
             String asunto = "";
+            String estado = "";
 
             tickets.clear();             //limpia el arrayList para evitar duplicados, no hay problema pues un libro no se debería poder borrar del sistema
             for (int f = 1; f <= filas; f++) {
@@ -60,6 +61,10 @@ public class EditorExcel {
                         case 2:
                             asunto = filaActual.getCell(c).getStringCellValue();
                             break;
+                        case 8:
+                            if (filaActual.getCell(c).getStringCellValue() != "" || filaActual.getCell(c).getStringCellValue() != "PENDIENTE")
+                                estado = filaActual.getCell(c).getStringCellValue();
+                            break;
                     }
                     //System.out.println();
                 }
@@ -72,8 +77,10 @@ public class EditorExcel {
 
                 Date d = new Date(fechaYHoraRecepcion);
 
-                Ticket t = new Ticket (d, idCliente, asunto, "Categoria");     //crea el ticket con los parámetros recibidos
-                tickets.add(t);
+                if (estado == "") {
+                    Ticket t = new Ticket(d, idCliente, asunto, "Categoria");     //crea el ticket con los parámetros recibidos
+                    tickets.add(t);
+                }
             }
 
         } catch (FileNotFoundException fileNotFoundException) {         //error si no encuentra el archivo
@@ -90,21 +97,66 @@ public class EditorExcel {
         return tickets;
     }
 
-    public void guardar(ArrayList<Ticket> ticketsActualizados){
+    public void guardarCategorias(ArrayList<Ticket> ticketsActualizados){
        try{
            FileOutputStream arch = new FileOutputStream("Tickets.xls");
            HSSFWorkbook workbook = new HSSFWorkbook();
-           HSSFSheet worksheet = workbook.createSheet("Tickets");
+           HSSFSheet wsInbox = workbook.createSheet("INBOX");
 
            // index from 0,0... cell A1 is cell(0,0)
-           HSSFRow filaTitulo = worksheet.createRow(0);
+           HSSFRow filaTitulo = wsInbox.createRow(0);
 
            HSSFCellStyle cellStyle = workbook.createCellStyle();
            Font f = workbook.createFont();
            f.setBoldweight(Font.BOLDWEIGHT_BOLD);
            cellStyle.setFont(f);
 
-           for (int c = 0; c < 10; c++){
+           for (int c = 0; c < 9; c++){
+               HSSFCell cell = filaTitulo.createCell(c);
+               cell.setCellStyle(cellStyle);
+               switch(c){
+                   case 0:
+                       cell.setCellValue("Fecha y Hora de Recepción");
+                       break;
+                   case 1:
+                       cell.setCellValue("ID de Cliente");
+                       break;
+                   case 2:
+                       cell.setCellValue("Asunto");
+                       break;
+                   case 3:
+                       cell.setCellValue("ID de Ticket");
+                       break;
+               }
+           }
+
+            for (int i = 0; i < ticketsActualizados.size(); i++){
+               HSSFRow filaDatos = wsInbox.createRow(i+1);
+                for (int j = 0; j < 10; j++){
+                    HSSFCell cell = filaDatos.createCell(j);
+
+                    switch(j){
+                        case 0:
+                            cell.setCellValue(ticketsActualizados.get(i).fechaYHoraRecepcion.toString());
+                            break;
+                        case 1:
+                            cell.setCellValue(ticketsActualizados.get(i).idCliente.get());
+                            break;
+                        case 2:
+                            cell.setCellValue(ticketsActualizados.get(i).asunto.get());
+                            break;
+                        case 3:
+                            cell.setCellValue(ticketsActualizados.get(i).idTicket);
+                            break;
+                    }
+                }
+            }
+
+           HSSFSheet wsVerde = workbook.createSheet("Verde (leve)");
+
+           filaTitulo = wsVerde.createRow(0);
+
+           for (int c = 0; c < 9; c++){
                HSSFCell cell = filaTitulo.createCell(c);
                cell.setCellStyle(cellStyle);
                switch(c){
@@ -121,66 +173,212 @@ public class EditorExcel {
                        cell.setCellValue("ID de Ticket");
                        break;
                    case 4:
-                       cell.setCellValue("Categoría");
-                       break;
-                   case 5:
                        cell.setCellValue("ID de Empleado");
                        break;
-                   case 6:
+                   case 5:
                        cell.setCellValue("Fecha y Hora de Atención");
                        break;
-                   case 7:
+                   case 6:
                        cell.setCellValue("Tiempo");
                        break;
-                   case 8:
+                   case 7:
                        cell.setCellValue("Comentario");
                        break;
-                   case 9:
+                   case 8:
                        cell.setCellValue("Estado");
                        break;
                }
            }
 
-            for (int i = 0; i < ticketsActualizados.size(); i++){
-               HSSFRow filaDatos = worksheet.createRow(i+1);
-                for (int j = 0; j < 10; j++){
-                    HSSFCell cell = filaDatos.createCell(j);
+           for (int i = 0; i < ticketsActualizados.size(); i++){
+               if (ticketsActualizados.get(i).categoria.get() == "Verde") {
+                   HSSFRow filaDatos = wsVerde.createRow(i + 1);
+                   for (int j = 0; j < 9; j++) {
+                       HSSFCell cell = filaDatos.createCell(j);
+                       switch (j) {
+                           case 0:
+                               cell.setCellValue(ticketsActualizados.get(i).fechaYHoraRecepcion.toString());
+                               break;
+                           case 1:
+                               cell.setCellValue(ticketsActualizados.get(i).idCliente.get());
+                               break;
+                           case 2:
+                               cell.setCellValue(ticketsActualizados.get(i).asunto.get());
+                               break;
+                           case 3:
+                               cell.setCellValue(ticketsActualizados.get(i).idTicket);
+                               break;
+                           case 4:
+                               cell.setCellValue(ticketsActualizados.get(i).idEmpleado.get());
+                               break;
+                           case 5:
+                               cell.setCellValue(ticketsActualizados.get(i).fechaYHoraAtencion.toString());
+                               break;
+                           case 6:
+                               cell.setCellValue(ticketsActualizados.get(i).tiempo.get());
+                               break;
+                           case 7:
+                               cell.setCellValue(ticketsActualizados.get(i).comentario.get());
+                               break;
+                           case 8:
+                               cell.setCellValue(ticketsActualizados.get(i).estado.get());
+                               break;
+                       }
+                   }
+               }
+           }
 
-                    switch(j){
-                        case 0:
-                            cell.setCellValue(ticketsActualizados.get(i).fechaYHoraRecepcion.toString());
-                            break;
-                        case 1:
-                            cell.setCellValue(ticketsActualizados.get(i).idCliente.get());
-                            break;
-                        case 2:
-                            cell.setCellValue(ticketsActualizados.get(i).asunto.get());
-                            break;
-                        /*case 3:
-                            cell.setCellValue(ticketsActualizados.get(i).idTicket);
-                            break;
-                        case 4:
-                            cell.setCellValue(ticketsActualizados.get(i).categoria.get());
-                            break;
-                        case 5:
-                            cell.setCellValue(ticketsActualizados.get(i).idEmpleado.get());
-                            break;
-                        case 6:
-                            cell.setCellValue(ticketsActualizados.get(i).fechaYHoraAtencion);
-                            break;
-                        case 7:
-                            cell.setCellValue(ticketsActualizados.get(i).tiempo.get());
-                            break;
-                        case 8:
-                            cell.setCellValue(ticketsActualizados.get(i).comentario.get());
-                            break;
-                        case 9:
-                            cell.setCellValue(ticketsActualizados.get(i).estado.get());
-                            break;
-                        */
-                    }
-                }
-            }
+           HSSFSheet wsAmarilla = workbook.createSheet("Amarillo (medio)");
+
+           filaTitulo = wsAmarilla.createRow(0);
+
+           for (int c = 0; c < 9; c++){
+               HSSFCell cell = filaTitulo.createCell(c);
+               cell.setCellStyle(cellStyle);
+               switch(c){
+                   case 0:
+                       cell.setCellValue("Fecha y Hora de Recepción");
+                       break;
+                   case 1:
+                       cell.setCellValue("ID de Cliente");
+                       break;
+                   case 2:
+                       cell.setCellValue("Asunto");
+                       break;
+                   case 3:
+                       cell.setCellValue("ID de Ticket");
+                       break;
+                   case 4:
+                       cell.setCellValue("ID de Empleado");
+                       break;
+                   case 5:
+                       cell.setCellValue("Fecha y Hora de Atención");
+                       break;
+                   case 6:
+                       cell.setCellValue("Tiempo");
+                       break;
+                   case 7:
+                       cell.setCellValue("Comentario");
+                       break;
+                   case 8:
+                       cell.setCellValue("Estado");
+                       break;
+               }
+           }
+
+           for (int i = 0; i < ticketsActualizados.size(); i++){
+               if (ticketsActualizados.get(i).categoria.get() == "Amarillo") {
+                   HSSFRow filaDatos = wsAmarilla.createRow(i + 1);
+                   for (int j = 0; j < 9; j++) {
+                       HSSFCell cell = filaDatos.createCell(j);
+                       switch (j) {
+                           case 0:
+                               cell.setCellValue(ticketsActualizados.get(i).fechaYHoraRecepcion.toString());
+                               break;
+                           case 1:
+                               cell.setCellValue(ticketsActualizados.get(i).idCliente.get());
+                               break;
+                           case 2:
+                               cell.setCellValue(ticketsActualizados.get(i).asunto.get());
+                               break;
+                           case 3:
+                               cell.setCellValue(ticketsActualizados.get(i).idTicket);
+                               break;
+                           case 4:
+                               cell.setCellValue(ticketsActualizados.get(i).idEmpleado.get());
+                               break;
+                           case 5:
+                               cell.setCellValue(ticketsActualizados.get(i).fechaYHoraAtencion.toString());
+                               break;
+                           case 6:
+                               cell.setCellValue(ticketsActualizados.get(i).tiempo.get());
+                               break;
+                           case 7:
+                               cell.setCellValue(ticketsActualizados.get(i).comentario.get());
+                               break;
+                           case 8:
+                               cell.setCellValue(ticketsActualizados.get(i).estado.get());
+                               break;
+                       }
+                   }
+               }
+           }
+
+           HSSFSheet wsRoja = workbook.createSheet("Rojo (urgente)");
+
+           filaTitulo = wsRoja.createRow(0);
+
+           for (int c = 0; c < 9; c++){
+               HSSFCell cell = filaTitulo.createCell(c);
+               cell.setCellStyle(cellStyle);
+               switch(c){
+                   case 0:
+                       cell.setCellValue("Fecha y Hora de Recepción");
+                       break;
+                   case 1:
+                       cell.setCellValue("ID de Cliente");
+                       break;
+                   case 2:
+                       cell.setCellValue("Asunto");
+                       break;
+                   case 3:
+                       cell.setCellValue("ID de Ticket");
+                       break;
+                   case 4:
+                       cell.setCellValue("ID de Empleado");
+                       break;
+                   case 5:
+                       cell.setCellValue("Fecha y Hora de Atención");
+                       break;
+                   case 6:
+                       cell.setCellValue("Tiempo");
+                       break;
+                   case 7:
+                       cell.setCellValue("Comentario");
+                       break;
+                   case 8:
+                       cell.setCellValue("Estado");
+                       break;
+               }
+           }
+
+           for (int i = 0; i < ticketsActualizados.size(); i++){
+               if (ticketsActualizados.get(i).categoria.get() == "Rojo") {
+                   HSSFRow filaDatos = wsRoja.createRow(i + 1);
+                   for (int j = 0; j < 9; j++) {
+                       HSSFCell cell = filaDatos.createCell(j);
+                       switch (j) {
+                           case 0:
+                               cell.setCellValue(ticketsActualizados.get(i).fechaYHoraRecepcion.toString());
+                               break;
+                           case 1:
+                               cell.setCellValue(ticketsActualizados.get(i).idCliente.get());
+                               break;
+                           case 2:
+                               cell.setCellValue(ticketsActualizados.get(i).asunto.get());
+                               break;
+                           case 3:
+                               cell.setCellValue(ticketsActualizados.get(i).idTicket);
+                               break;
+                           case 4:
+                               cell.setCellValue(ticketsActualizados.get(i).idEmpleado.get());
+                               break;
+                           case 5:
+                               cell.setCellValue(ticketsActualizados.get(i).fechaYHoraAtencion.toString());
+                               break;
+                           case 6:
+                               cell.setCellValue(ticketsActualizados.get(i).tiempo.get());
+                               break;
+                           case 7:
+                               cell.setCellValue(ticketsActualizados.get(i).comentario.get());
+                               break;
+                           case 8:
+                               cell.setCellValue(ticketsActualizados.get(i).estado.get());
+                               break;
+                       }
+                   }
+               }
+           }
 
            workbook.write(arch);
 
