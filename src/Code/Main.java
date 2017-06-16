@@ -42,9 +42,10 @@ public class Main extends Application {
         EditorExcel x = new EditorExcel();
 
         ArrayList<Ticket> t = new ArrayList<>();
-        t.add(new Ticket(new Date(117, 5, 14, 10, 06, 54), "C-03", "Errores"));
-        t.add(new Ticket(new Date(117, 5, 15), "C-09", "Problemas"));
-        t.add(new Ticket(new Date(117, 5, 16), "C-12", "Ayuda"));
+        t.add(new Ticket(new Date(117, 5, 14, 10, 06, 54), "C-03",
+                "Errores", "Por Definir"));
+        t.add(new Ticket(new Date(117, 5, 15), "C-09", "Problemas", "Por definir"));
+        t.add(new Ticket(new Date(117, 5, 16), "C-12", "Ayuda", "Por definir"));
 
         x.guardar(t);
 

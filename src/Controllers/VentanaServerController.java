@@ -310,8 +310,8 @@ public class VentanaServerController{
         });
 
         JFXTreeTableColumn<Ticket, String> colCategoria = new JFXTreeTableColumn<>("Categoria");
-        colAsunto.setPrefWidth(100);
-        colAsunto.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
+        colCategoria.setPrefWidth(100);
+        colCategoria.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
                 return param.getValue().getValue().categoria;
@@ -352,7 +352,7 @@ public class VentanaServerController{
         });
 
         ttvTicketsServer.setEditable(true);
-        ttvTicketsServer.getColumns().setAll(colFecha, colIDCliente, colAsunto);
+        ttvTicketsServer.getColumns().setAll(colFecha, colIDCliente, colAsunto, colCategoria);
         ttvTicketsServer.setRoot(root);
         ttvTicketsServer.setShowRoot(false);
         ttvTicketsServer.autosize();

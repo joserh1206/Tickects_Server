@@ -72,7 +72,7 @@ public class EditorExcel {
 
                 Date d = new Date(fechaYHoraRecepcion);
 
-                Ticket t = new Ticket (d, idCliente, asunto);     //crea el ticket con los parámetros recibidos
+                Ticket t = new Ticket (d, idCliente, asunto, "Categoria");     //crea el ticket con los parámetros recibidos
                 tickets.add(t);
             }
 

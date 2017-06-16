@@ -90,7 +90,7 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
      * @param pIdCliente
      * @param pAsunto
      */
-    public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto){
+    public Ticket(Date pFechaYHoraRecepcion, String pIdCliente, String pAsunto, String pCategoria){
         fechaYHoraRecepcion = pFechaYHoraRecepcion;
 
         int min = fechaYHoraRecepcion.getMinutes();
@@ -110,7 +110,7 @@ public class Ticket extends RecursiveTreeObject <Ticket> {
                 Integer.toString(fechaYHoraRecepcion.getHours()) + ":" + minutos + ":" + segundos);
         idCliente.set(pIdCliente);
         asunto.set(pAsunto);
-//        categoria.set(pCategoria);
+        categoria.set(pCategoria);
         idTicket++;
         estado.set("PENDIENTE");
     }
