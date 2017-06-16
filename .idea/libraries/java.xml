@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="java">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jfoenix.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProyectoBiblioteca/src/ClasesBiblioteca/poi-3.15.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/Downloads/JFoenix-master/jfoenix/src/main/java" />
+      <root url="file://$USER_HOME$/Downloads/JFoenix-master/demo/src/main/java" />
+    </SOURCES>
+  </library>
+</component>

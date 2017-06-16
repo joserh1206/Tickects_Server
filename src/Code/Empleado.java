@@ -14,13 +14,6 @@ public class Empleado{
     public String email, contraseña, nombre, categoria;
     public Boolean estado;
 
-    /**
-     * @param email
-     * @param contraseña
-     * @param nombre
-     * @param categoria
-     * @throws IOException
-     */
     public Empleado(String email, String contraseña, String nombre, String categoria) throws IOException {
         this.email = email;
         this.contraseña = contraseña;
@@ -28,12 +21,6 @@ public class Empleado{
         this.categoria = categoria;
     }
 
-    /**
-     * @param datosIngreso
-     * @param salida
-     * @return
-     * @throws IOException
-     */
     public String ingreso(String datosIngreso[], DataOutputStream salida) throws IOException {
 
         Empleado profe = new Empleado("eshuman@tec.ac.cr", "2014032210", "Erika Marin",
