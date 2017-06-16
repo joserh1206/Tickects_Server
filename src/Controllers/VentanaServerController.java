@@ -57,7 +57,8 @@ class conector extends Task<String> {
      * @throws Exception excepción de cualquier clase
      */
     @Override
-    protected String call() throws Exception {
+    protected String call() throws Exception, IOException {
+        String mensaje;
         try {
             server = new ServerSocket(9000);
             log = log + "\n Se cargaron los archivos de forma exitosa";
@@ -65,7 +66,7 @@ class conector extends Task<String> {
             socket = server.accept();
             entrada = new DataInputStream(socket.getInputStream());
             salida = new DataOutputStream(socket.getOutputStream());
-            String mensaje = "Fail;0";
+            mensaje = "Fail;0";
             while (Objects.equals(mensaje, "Fail;0")) {
                 mensaje = entrada.readUTF();
                 int num = mensaje.indexOf(";");
@@ -134,7 +135,6 @@ class conector extends Task<String> {
                     }
                     salida.writeUTF(envio);
                     System.out.println("ENVIO: "+envio);
-
                 }
                 mensaje = entrada.readUTF();
                 datosIngreso = mensaje.split(";");
@@ -144,14 +144,19 @@ class conector extends Task<String> {
                     Ticket t;
                     for(int i=0; i<EditorExcel.tickets.size(); i++){
                         t = EditorExcel.tickets.get(i);
-                        if(Objects.equals(t.asunto, id)){
+                        if(Objects.equals(t.asunto.getValue(), id)){
                             System.out.println("LLEGOOO");
                             t.comentario.set(comentario);
+                            t.estado.set("ATENDIDO");
                         }
                     }
                 }
-                System.out.println(mensaje + " MSJ");
+                datosIngreso = mensaje.split(";");
+                mensaje = datosIngreso[1];
+                //                mensaje = entrada.readUTF();
             }
+
+        } catch (Exception e) {
             mensaje = datosIngreso[0];
             if (Objects.equals(mensaje, "Erika Marin")) {
                 Platform.runLater(new Runnable() {
@@ -177,9 +182,6 @@ class conector extends Task<String> {
             }
             log = log + "\n " + mensaje + "  se ha desconectado!";
             updateMessage(log);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Se produjo un error al conectar");
         }
 
         return user;
