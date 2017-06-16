@@ -100,7 +100,7 @@ class conector extends Task<String> {
                     }
                 });
             }
-            boolean primero = true;
+            boolean primero;
             mensaje = "";
             String envio = "";
 //            System.out.println("1");
@@ -111,6 +111,8 @@ class conector extends Task<String> {
                 mensaje = datosIngreso[1];
                 if(Objects.equals(mensaje, "Actualizar")){
                     System.out.println("ENTRO2");
+                    envio = "";
+                    primero = true;
                     int tamanio = EditorExcel.tickets.size();
                     Ticket t;
                     for(int i=0; i<tamanio; i++){
@@ -133,6 +135,20 @@ class conector extends Task<String> {
                     salida.writeUTF(envio);
                     System.out.println("ENVIO: "+envio);
 
+                }
+                mensaje = entrada.readUTF();
+                datosIngreso = mensaje.split(";");
+                if(Objects.equals(datosIngreso[0], "Resuelto")){
+                    String comentario = datosIngreso[1];
+                    String id = datosIngreso[2];
+                    Ticket t;
+                    for(int i=0; i<EditorExcel.tickets.size(); i++){
+                        t = EditorExcel.tickets.get(i);
+                        if(Objects.equals(t.asunto, id)){
+                            System.out.println("LLEGOOO");
+                            t.comentario.set(comentario);
+                        }
+                    }
                 }
                 System.out.println(mensaje + " MSJ");
             }
@@ -341,6 +357,15 @@ public class VentanaServerController{
             }
         });
 
+        JFXTreeTableColumn<Ticket, String> colEstado = new JFXTreeTableColumn<>("Estado");
+        colEstado.setPrefWidth(100);
+        colEstado.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
+                return param.getValue().getValue().estado;
+            }
+        });
+
         ObservableList<Ticket> tickets = FXCollections.observableArrayList();
         ObservableList<String> CategoriasTickets = FXCollections.observableArrayList("rojo", "amarillo", "verde");
 
@@ -372,7 +397,7 @@ public class VentanaServerController{
         });
 
         ttvTicketsServer.setEditable(true);
-        ttvTicketsServer.getColumns().setAll(colFecha, colIDCliente, colAsunto, colCategoria);
+        ttvTicketsServer.getColumns().setAll(colFecha, colIDCliente, colAsunto, colCategoria, colEstado);
         ttvTicketsServer.setRoot(root);
         ttvTicketsServer.setShowRoot(false);
         ttvTicketsServer.autosize();
