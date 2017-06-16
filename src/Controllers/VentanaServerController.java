@@ -172,6 +172,16 @@ public class VentanaServerController{
     private JFXButton btnConectar;
 
     @FXML
+    private JFXButton btnVerde;
+
+    @FXML
+    private JFXButton btnAmarillo;
+
+    @FXML
+    private JFXButton btnRojo;
+
+
+    @FXML
     void ConsultarEstadisticasServer(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXMLs/VentanaEstadisticas.fxml"));
         Parent parent = fxmlLoader.load();
@@ -259,7 +269,7 @@ public class VentanaServerController{
 
     public void MostrarTickets() {
         JFXTreeTableColumn<Ticket, String> colFecha = new JFXTreeTableColumn<>("Fecha y Hora de Recepción");
-        colFecha.setPrefWidth(150);
+        colFecha.setPrefWidth(170);
         colFecha.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
@@ -268,7 +278,7 @@ public class VentanaServerController{
         });
 
         JFXTreeTableColumn<Ticket, String> colIDCliente = new JFXTreeTableColumn<>("ID de Cliente");
-        colIDCliente.setPrefWidth(150);
+        colIDCliente.setPrefWidth(100);
         colIDCliente.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
@@ -277,7 +287,7 @@ public class VentanaServerController{
         });
 
         JFXTreeTableColumn<Ticket, String> colAsunto = new JFXTreeTableColumn<>("Asunto");
-        colAsunto.setPrefWidth(150);
+        colAsunto.setPrefWidth(100);
         colAsunto.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Ticket, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Ticket, String> param) {
@@ -288,7 +298,17 @@ public class VentanaServerController{
         ObservableList<Ticket> tickets = FXCollections.observableArrayList();
 
         EditorExcel x = new EditorExcel();
-        ArrayList<Ticket> ticketsArchivo = x.cargar(new File("Tickets.xls"));
+
+        File arch = new File("Tickets.xls");
+        if (!arch.exists()){
+            try {
+                arch.createNewFile();
+            } catch (IOException ioe) {
+                System.out.println("Error al crear el fichero nuevo" + ioe);
+            }
+        }
+
+        ArrayList<Ticket> ticketsArchivo = x.cargar(arch);
 
         for (int i = 0; i < ticketsArchivo.size(); i++){
             tickets.add(ticketsArchivo.get(i));
@@ -301,6 +321,12 @@ public class VentanaServerController{
         ttvTicketsServer.autosize();
 
     }
+
+/*    public void ClasificarTicket(){
+        Ticket t = ttvTicketsServer.getSelectionModel().getSelectedItem().getValue();
+
+    }
+*/
 
     public static class Funcionarios extends RecursiveTreeObject<Funcionarios>{
 

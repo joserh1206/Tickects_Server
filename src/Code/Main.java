@@ -48,17 +48,6 @@ public class Main extends Application {
 
         x.guardar(t);
 
-        File arch = new File("Tickets.xls");
-        if (!arch.exists()){
-            try {
-                arch.createNewFile();
-            } catch (IOException ioe) {
-                System.out.println("Error al crear el fichero nuevo" + ioe);
-            }
-        }
-
-        x.cargar(arch);
-
         launch(args);
     }
 }
