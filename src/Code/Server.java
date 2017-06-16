@@ -1,12 +1,12 @@
 package Code;
 
-import Controllers.VentanaServerController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import static Code.Main.server;
 import static Code.Main.socket;
@@ -62,4 +62,29 @@ public class Server implements Runnable {
         } catch (IOException e) {
         }
     }
+
+    public void leerExcel(){
+
+    }
+
+    public void cargarNuevosTickets(){
+
+    }
+
+    public int tiempoPromedioAtencion(){
+        return  0;
+    }
+
+    public int tiempoPromedio(String login){
+        return 0;
+    }
+
+    public ArrayList ticketsAtendidos(Calendar fechaInicial, Calendar fechaFinal){
+        return new ArrayList();
+    }
+
+    public ArrayList ticketsAtendidos(String login){
+        return new ArrayList();
+    }
+
 }
