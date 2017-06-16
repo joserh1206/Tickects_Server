@@ -47,7 +47,7 @@ public class Main extends Application {
         t.add(new Ticket(new Date(117, 5, 15), "C-09", "Problemas", "Por definir"));
         t.add(new Ticket(new Date(117, 5, 16), "C-12", "Ayuda", "Por definir"));
 
-        x.guardar(t);
+        x.guardarCategorias(t);
 
         launch(args);
     }
