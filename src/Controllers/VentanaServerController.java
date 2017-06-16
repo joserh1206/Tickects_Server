@@ -120,24 +120,23 @@ class conector extends Task<String> {
                         System.out.println("ENTRO3");
                         t = EditorExcel.tickets.get(i);
 //                        System.out.println(t.categoria+" TCATEGORIA");
-                        if(Objects.equals(t.categoria.getValue().toLowerCase(), datosIngreso[0].toLowerCase())){
-                            t.idTicket = idTicket;
-                            idTicket++;
-                            if(!primero) {
-                                envio = envio + ";" + t.asunto.getValue() + ":" + t.idCliente.getValue() + ":" + String.valueOf(t.idTicket);
-                                System.out.println("ENTRO");
-                            }
-                            else{
-                                envio = t.asunto.getValue() + ":" + t.idCliente.getValue() + ":" + String.valueOf(t.idTicket);
-                                primero = false;
+                        if(Objects.equals(t.categoria.getValue().toLowerCase(), datosIngreso[0].toLowerCase())) {
+                            if (!Objects.equals(t.estado.getValue(), "ATENDIDO")) {
+                                t.idTicket = idTicket;
+                                idTicket++;
+                                if (!primero) {
+                                    envio = envio + ";" + t.asunto.getValue() + ":" + t.idCliente.getValue() + ":" + String.valueOf(t.idTicket);
+                                    System.out.println("ENTRO");
+                                } else {
+                                    envio = t.asunto.getValue() + ":" + t.idCliente.getValue() + ":" + String.valueOf(t.idTicket);
+                                    primero = false;
+                                }
                             }
                         }
                     }
                     salida.writeUTF(envio);
                     System.out.println("ENVIO: "+envio);
                 }
-                mensaje = entrada.readUTF();
-                datosIngreso = mensaje.split(";");
                 if(Objects.equals(datosIngreso[0], "Resuelto")){
                     String comentario = datosIngreso[1];
                     String id = datosIngreso[2];
@@ -151,8 +150,8 @@ class conector extends Task<String> {
                         }
                     }
                 }
-                datosIngreso = mensaje.split(";");
-                mensaje = datosIngreso[1];
+//                datosIngreso = mensaje.split(";");
+//                mensaje = datosIngreso[1];
                 //                mensaje = entrada.readUTF();
             }
 
